@@ -1,6 +1,5 @@
 # cuIdx
 
----
 cuIdx is a single header CUDA/C++ library that aims to assist with indexing in CUDA kernels.
 In particular it provides functions to retrieve:
 
