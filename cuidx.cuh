@@ -36,10 +36,10 @@
     #error "cuIdx minimum supported Cuda version: 2.1"
 #endif
 
-#if (CUDART_VERSION >= 7050)
-  #define __C11_SUPPORTED 1
+#if (CUDART_VERSION >= 7050) && defined(__cplusplus) && (__cplusplus >= 201103)
+  #define __CUIDX_C11_ENABLED 1
 #else
-  #define __C11_SUPPORTED 0
+  #define __CUIDX_C11_ENABLED 0
 #endif
 
 #define WARPSIZE 32
@@ -113,7 +113,7 @@ namespace cuidx
  *          for all cases. However, when <code>blockdims < 3</code>, passing
  *          a template argument results in a slightly faster computation.
  */
-#if __C11_SUPPORTED
+#if __CUIDX_C11_ENABLED
 template<int blockdims> __device__ __forceinline__ uint32_t bsz(void) = delete;
 #else
 template<int blockdims> __device__ __forceinline__ uint32_t bsz(void);
@@ -132,7 +132,7 @@ template<int blockdims> __device__ __forceinline__ uint32_t bsz(void);
  *          for all cases. However, when <code>griddims < 3</code>, passing
  *          a template argument results in a slightly faster computation.
  */
-#if __C11_SUPPORTED
+#if __CUIDX_C11_ENABLED
 template<int griddims> __device__ __forceinline__ uint32_t bid(void) = delete;
 #else
 template<int griddims> __device__ __forceinline__ uint32_t bid(void);
@@ -153,7 +153,7 @@ template<int griddims> __device__ __forceinline__ uint32_t bid(void);
  *          for all cases. However, when <code>blockdims < 3</code>, passing
  *          a template argument results in a slightly faster computation.
  */
-#if __C11_SUPPORTED
+#if __CUIDX_C11_ENABLED
 template<int blockdims> __device__ __forceinline__ uint32_t tid(void) = delete;
 #else
 template<int blockdims> __device__ __forceinline__ uint32_t tid(void);
@@ -174,7 +174,7 @@ template<int blockdims> __device__ __forceinline__ uint32_t tid(void);
  *          for all cases. However, when <code>blockdims < 3 && griddims < 3</code>, 
  *          passing template arguments results in a slightly faster computation.
  */
-#if __C11_SUPPORTED
+#if __CUIDX_C11_ENABLED
 template<int griddims, int blockdims> __device__ __forceinline__ uint32_t gtid(void) = delete;
 #else
 template<int griddims, int blockdims> __device__ __forceinline__ uint32_t gtid(void);
@@ -194,7 +194,7 @@ template<int griddims, int blockdims> __device__ __forceinline__ uint32_t gtid(v
  *          for all cases. However, when <code>blockdims < 3</code>, 
  *          passing template arguments results in a slightly faster computation.
  */
-#if __C11_SUPPORTED
+#if __CUIDX_C11_ENABLED
 template<int blockdims> __device__ __forceinline__ uint32_t wid(void) = delete;
 #else
 template<int blockdims> __device__ __forceinline__ uint32_t wid(void);
@@ -215,7 +215,7 @@ template<int blockdims> __device__ __forceinline__ uint32_t wid(void);
  *          for all cases. However, when <code>blockdims < 3 && griddims < 3</code>, 
  *          passing template arguments results in a slightly faster computation.
  */
-#if __C11_SUPPORTED
+#if __CUIDX_C11_ENABLED
 template<int griddims, int blockdims> __device__ __forceinline__ uint32_t gwid(void) = delete;
 #else
 template<int griddims, int blockdims> __device__ __forceinline__ uint32_t gwid(void);
