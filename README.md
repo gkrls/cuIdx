@@ -13,10 +13,10 @@ In particular it provides functions to retrieve:
 for any number of grid and block dimensions. 
 
 All library functions are meant to be called from within CUDA kernels. 
-(Almost) all functions accept template arguments that denote the grid/block 
-dimensions as specified on kernel launch. Non-template versions exist and
-can cover any grid/block dimensions at the expense of a slightly more costly
-computation (as the assume 3 dimensions to cover all cases.)
+(Almost) all functions accept template arguments that denote the number of
+grid/block dimensions as specified on kernel launch. Non-template versions exist and
+can cover any number of grid/block dimensions at the expense of a slightly more costly
+computation (3 dimensions are assumed to cover all cases.)
 
 `cuIdx.cuh` should be compiled with NVCC. Minimum supported CUDA Version: **2.1**
 
