@@ -1,4 +1,4 @@
-cuIdx
+# cuIdx
 
 ---
 cuIdx is a single header CUDA/C++ library that aims to assist with indexing in CUDA kernels.
@@ -21,10 +21,10 @@ computation (as the assume 3 dimensions to cover all cases.)
 
 `cuIdx.cuh` should be compiled with NVCC. Minimum supported CUDA Version: **2.1**
 
-###Documentation
+### Documentation
 Todo
 
-###Example Usage
+### Example Usage
 ```
 TODO
 ```
