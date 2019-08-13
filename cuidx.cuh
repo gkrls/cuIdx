@@ -232,14 +232,8 @@ __device__ __forceinline__ uint32_t lid(void);
 __device__ __forceinline__ uint32_t smid(void);
 
 /*!
- * @brief Test wethere the calling thread is its warp leader. i.e the thread
- *        at lane 0.
- *
- * @tparam blockdims The number of block dimensions specified on kernel launch
- *
- * @details <code>cuidx::wleader()</code> (without template arguments) works
- *          for all cases. However, when <code>blockdims < 3</code>, 
- *          passing template arguments results in a slightly faster computation.
+ * @brief Test wether the calling thread the leader of its warp. i.e 
+ * the thread at lane 0.
  */
 __device__ __forceinline__ bool wleader(void);
 
