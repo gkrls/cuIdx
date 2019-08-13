@@ -241,7 +241,8 @@ __device__ __forceinline__ uint32_t smid(void);
  *          for all cases. However, when <code>blockdims < 3</code>, 
  *          passing template arguments results in a slightly faster computation.
  */
-template<int blockdims> __device__ __forceinline__ bool wleader(void);
+__device__ __forceinline__ bool wleader(void);
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 __device__ __forceinline__ uint32_t bsz(void);
