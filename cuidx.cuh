@@ -43,6 +43,7 @@
 #endif
 
 #define WARPSIZE 32
+#define HALFWARPSIZE 16
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -232,10 +233,20 @@ __device__ __forceinline__ uint32_t lid(void);
 __device__ __forceinline__ uint32_t smid(void);
 
 /*!
- * @brief Test wether the calling thread the leader of its warp. i.e 
+ * @brief Test whether the calling thread is the leader of its warp. i.e 
  * the thread at lane 0.
  */
 __device__ __forceinline__ bool wleader(void);
+
+/*!
+ * @brief Test whether the calling thread is the leader of its half-warp. i.e 
+ * the thread at lane 0 or lane 16
+ *
+ * @return 0 Calling thread is not a half warp leader                       <br/>
+ *         1 Calling thread is the leader of the first half warp (lane 0)   <br/>
+ *         2 Calling thread is the leader of the second half warp (lane 16) <br/>
+ */
+ __device__ __forceinline__ int hwleader(void);
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -245,7 +256,6 @@ __device__ __forceinline__ uint32_t tid(void);
 __device__ __forceinline__ uint32_t gtid(void);
 __device__ __forceinline__ uint32_t wid(void);
 __device__ __forceinline__ uint32_t gwid(void);
-__device__ __forceinline__ bool wleader(void);
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
@@ -332,7 +342,16 @@ __device__ __forceinline__ uint32_t cuidx::gtid(void) { return __gtid(3, 3); }
 __device__ __forceinline__ uint32_t cuidx::wid(void)  { return __wid(3);     }
 __device__ __forceinline__ uint32_t cuidx::gwid(void) { return __gwid(3, 3); }
 
-__device__ __forceinline__ bool cuidx::wleader(void) { return cuidx::lid() == 0; }
+__device__ __forceinline__ bool cuidx::wleader(void) 
+{ 
+  return cuidx::lid() == 0; 
+}
+
+__device__ __forceinline__ int cuidx::hwleader(void) 
+{ 
+  uint32_t lane = cuidx::lid();
+  return (!lane)? 1 : (lane == HALFWARPSIZE)? 2 : 0; 
+}
 
 __device__ __forceinline__ uint32_t cuidx::lid(void)
 {
