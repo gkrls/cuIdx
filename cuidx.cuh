@@ -214,7 +214,7 @@ template<int blockdims> __device__ __forceinline__ uint32_t wid(void);
  *          for all cases. However, when <code>blockdims < 3 && griddims < 3</code>, 
  *          passing template arguments results in a slightly faster computation.
  */
- #if __C11_SUPPORTED
+#if __C11_SUPPORTED
 template<int griddims, int blockdims> __device__ __forceinline__ uint32_t gwid(void) = delete;
 #else
 template<int griddims, int blockdims> __device__ __forceinline__ uint32_t gwid(void);
@@ -231,6 +231,18 @@ __device__ __forceinline__ uint32_t lid(void);
  */
 __device__ __forceinline__ uint32_t smid(void);
 
+/*!
+ * @brief Test wethere the calling thread is its warp leader. i.e the thread
+ *        at lane 0.
+ *
+ * @tparam blockdims The number of block dimensions specified on kernel launch
+ *
+ * @details <code>cuidx::wleader()</code> (without template arguments) works
+ *          for all cases. However, when <code>blockdims < 3</code>, 
+ *          passing template arguments results in a slightly faster computation.
+ */
+template<int blockdims> __device__ __forceinline__ bool wleader(void);
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 __device__ __forceinline__ uint32_t bsz(void);
 __device__ __forceinline__ uint32_t bid(void);
@@ -238,6 +250,7 @@ __device__ __forceinline__ uint32_t tid(void);
 __device__ __forceinline__ uint32_t gtid(void);
 __device__ __forceinline__ uint32_t wid(void);
 __device__ __forceinline__ uint32_t gwid(void);
+__device__ __forceinline__ bool wleader(void);
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
@@ -274,6 +287,7 @@ template<> __device__ __forceinline__ uint32_t gwid<2, 3>(void);
 template<> __device__ __forceinline__ uint32_t gwid<3, 1>(void);
 template<> __device__ __forceinline__ uint32_t gwid<3, 2>(void);
 template<> __device__ __forceinline__ uint32_t gwid<3, 3>(void);
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 }
@@ -322,6 +336,8 @@ __device__ __forceinline__ uint32_t cuidx::tid(void)  { return __tid(3);     }
 __device__ __forceinline__ uint32_t cuidx::gtid(void) { return __gtid(3, 3); }
 __device__ __forceinline__ uint32_t cuidx::wid(void)  { return __wid(3);     }
 __device__ __forceinline__ uint32_t cuidx::gwid(void) { return __gwid(3, 3); }
+
+__device__ __forceinline__ bool cuidx::wleader(void) { return cuidx::lid() == 0; }
 
 __device__ __forceinline__ uint32_t cuidx::lid(void)
 {
