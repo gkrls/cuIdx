@@ -76,11 +76,22 @@
 #define __wid2 ( __tid(2) / WARPSIZE )
 #define __wid3 ( __tid(3) / WARPSIZE )
 
+#define __gwid11 ( __gtid(1,1) / WARPSIZE)
+#define __gwid12 ( __gtid(1,2) / WARPSIZE)
+#define __gwid13 ( __gtid(1,3) / WARPSIZE)
+#define __gwid21 ( __gtid(2,1) / WARPSIZE)
+#define __gwid22 ( __gtid(2,2) / WARPSIZE)
+#define __gwid23 ( __gtid(2,3) / WARPSIZE)
+#define __gwid31 ( __gtid(3,1) / WARPSIZE)
+#define __gwid32 ( __gtid(3,2) / WARPSIZE)
+#define __gwid33 ( __gtid(3,3) / WARPSIZE)
+
 #define __bsz( blockdims)           __bsz##blockdims
 #define __bid( griddims )           __bid##griddims 
 #define __tid( blockdims)           __tid##blockdims
 #define __gtid(griddims, blockdims) __gtid##griddims ##blockdims
 #define __wid( blockdims)           __wid##blockdims
+#define __gwid(griddims, blockdims) __gwid##griddims ##blockdims
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
@@ -226,6 +237,7 @@ __device__ __forceinline__ uint32_t bid(void);
 __device__ __forceinline__ uint32_t tid(void);
 __device__ __forceinline__ uint32_t gtid(void);
 __device__ __forceinline__ uint32_t wid(void);
+__device__ __forceinline__ uint32_t gwid(void);
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
@@ -253,6 +265,15 @@ template<> __device__ __forceinline__ uint32_t gtid<3, 3>(void);
 template<> __device__ __forceinline__ uint32_t wid<1>(void);
 template<> __device__ __forceinline__ uint32_t wid<2>(void);
 template<> __device__ __forceinline__ uint32_t wid<3>(void);
+template<> __device__ __forceinline__ uint32_t gwid<1, 1>(void);
+template<> __device__ __forceinline__ uint32_t gwid<1, 2>(void);
+template<> __device__ __forceinline__ uint32_t gwid<1, 3>(void);
+template<> __device__ __forceinline__ uint32_t gwid<2, 1>(void);
+template<> __device__ __forceinline__ uint32_t gwid<2, 2>(void);
+template<> __device__ __forceinline__ uint32_t gwid<2, 3>(void);
+template<> __device__ __forceinline__ uint32_t gwid<3, 1>(void);
+template<> __device__ __forceinline__ uint32_t gwid<3, 2>(void);
+template<> __device__ __forceinline__ uint32_t gwid<3, 3>(void);
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 }
@@ -285,11 +306,22 @@ template<> __device__ __forceinline__ uint32_t cuidx::wid<1>(void) { return __wi
 template<> __device__ __forceinline__ uint32_t cuidx::wid<2>(void) { return __wid(2); }
 template<> __device__ __forceinline__ uint32_t cuidx::wid<3>(void) { return __wid(3); }
 
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<1, 1>(void) { return __gwid(1,1); }
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<1, 2>(void) { return __gwid(1,2); }
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<1, 3>(void) { return __gwid(1,3); }
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<2, 1>(void) { return __gwid(2,1); }
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<2, 2>(void) { return __gwid(2,2); }
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<2, 3>(void) { return __gwid(2,3); }
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<3, 1>(void) { return __gwid(3,1); }
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<3, 2>(void) { return __gwid(3,2); }
+template<> __device__ __forceinline__ uint32_t cuidx::gwid<3, 3>(void) { return __gwid(3,3); }
+
 __device__ __forceinline__ uint32_t cuidx::bsz(void)  { return __bsz(3);     }
 __device__ __forceinline__ uint32_t cuidx::bid(void)  { return __bid(3);     }
 __device__ __forceinline__ uint32_t cuidx::tid(void)  { return __tid(3);     }
 __device__ __forceinline__ uint32_t cuidx::gtid(void) { return __gtid(3, 3); }
 __device__ __forceinline__ uint32_t cuidx::wid(void)  { return __wid(3);     }
+__device__ __forceinline__ uint32_t cuidx::gwid(void) { return __gwid(3, 3); }
 
 __device__ __forceinline__ uint32_t cuidx::lid(void)
 {
