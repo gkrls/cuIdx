@@ -24,6 +24,19 @@ computation (3 dimensions are assumed to cover all cases.)
 Todo
 
 ## Example Usage
+
+- Retrieve global thread index
 ```C++
-TODO
+#include "cuidx.cuh"
+
+using namespace cuidx;
+
+__global__ void vecadd(int *A, int *B, int *C, unsigned len) {
+  // auto pos = blockDim.x * blockIdx.x + threadIdx.x; // <- vanilla cuda
+  auto pos = gtid();                                   // <- cuidx
+  if (pos < len) {
+    C[pos] = A[pos] + B[pos];
+  }
+}
+
 ```
