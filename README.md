@@ -32,11 +32,17 @@ Todo
 using namespace cuidx;
 
 __global__ void vecadd(int *A, int *B, int *C, unsigned len) {
-  // auto pos = blockDim.x * blockIdx.x + threadIdx.x; // <- vanilla cuda
-  auto pos = gtid();                                   // <- cuidx
-  if (pos < len) {
+  // auto pos = blockIdx.x * blockDim.x + threadIdx.x;    // vanilla cuda, 1D grid/blocks
+  // auto pos = blockIdx.x * blockDim.x * blockDim.y
+  //            + threadIdx.y * blockDim.x + threadIdx.x; // vanilla cuda, 1D grid, 2D blocks
+  // auto pos = blockIdx.x * blockDim.x * blockDim.y * blockDim.z
+  //            + threadIdx.z * blockDim.y * blockDim.x
+  //            + threadIdx.y * blockDim.x
+  //            + threadIdx.x                             // vanilla cuda, 1D grid, 3D blocks
+  
+  auto pos = gtid();                                      // <- cuidx
+  if (pos < len)
     C[pos] = A[pos] + B[pos];
-  }
 }
 
 ```
@@ -48,12 +54,10 @@ __global__ void vecadd(int *A, int *B, int *C, unsigned len) {
 using namespace cuidx;
 
 __global__ void vecadd(int *A, int *B, int *C, unsigned len) {
-  // auto pos = blockDim.x * blockIdx.x + threadIdx.x; // <- vanilla cuda
-  // auto pos = gtid();                                // <- cuidx, assumes 3D grid, 3D blocks
-  auto pos = gtid<1,1>();                              // <- cuidx, assumes 1D grid, 1D blocks (faster)
-  if (pos < len) {
+  // auto pos = gtid();                                // <- cuidx, assumes 3D grid/blocks
+  auto pos = gtid<1,1>();                              // <- cuidx, for 1D grid/blocks (faster)
+  if (pos < len)
     C[pos] = A[pos] + B[pos];
-  }
 }
 
 ```
