@@ -40,3 +40,20 @@ __global__ void vecadd(int *A, int *B, int *C, unsigned len) {
 }
 
 ```
+
+- Retrieve global thread index (faster)
+```C++
+#include "cuidx.cuh"
+
+using namespace cuidx;
+
+__global__ void vecadd(int *A, int *B, int *C, unsigned len) {
+  // auto pos = blockDim.x * blockIdx.x + threadIdx.x; // <- vanilla cuda
+  // auto pos = gtid();                                // <- cuidx, assumes 3D grid, 3D blocks
+  auto pos = gtid<1,1>();                              // <- cuidx, assumes 1D grid, 1D blocks (faster)
+  if (pos < len) {
+    C[pos] = A[pos] + B[pos];
+  }
+}
+
+```
