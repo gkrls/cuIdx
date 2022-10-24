@@ -61,3 +61,28 @@ __global__ void vecadd(int *A, int *B, int *C, unsigned len) {
 }
 
 ```
+
+- Warp level
+```C++
+#include "cuidx.cuh"
+
+using namespace cuidx;
+
+__global__ void kernel(int *A, int *B, int *C, unsigned len) {
+  __shared__ int shmem[BLOCK_SIZE / WARPSIZE] = {0};
+  int warp_sum = 0;
+  ...
+  
+  __syncwarp();
+  
+  // vanilla cuda
+  auto tid = threadIdx.x * blockDim.x + threadIdx.x; // get tid in 2D block
+  if ( tid % 32 == 0)                                // check laneid == 0 (leader)
+    shmem[tid / 32] = warp_sum;                      // write at warp index
+  
+  // cuidx
+  if ( wleader())
+    shmem[ wid()] = warp_sum;
+}
+
+```
